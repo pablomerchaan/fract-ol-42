@@ -41,20 +41,20 @@ int	get_color(double line, double column, double x, double y, double z)
   else if (in_set < 20)
     color = create_trgb(0, 255, 0, 0);
   else if (in_set >= 30)
-    color = create_trgb(0, 185, 40, 30);
-  else if (in_set <= 40)
-    color = create_trgb(0, 205, 20, 30);
-  else if (in_set <= 50)
-    color = create_trgb(0, 165, 60, 30);
-  else if (in_set <= 60)
-    color = create_trgb(0, 155, 70, 30);
-  else if (in_set <= 80)
-    color = create_trgb(0, 100, 100, 55);
-  else if (in_set <= 100)
-    color = create_trgb(0, 95, 120, 40);
-  else if (in_set <= 120)
+    color = create_trgb(0, 215, 40, 0);
+  else if (in_set >= 40)
+    color = create_trgb(0, 235, 20, 0);
+  else if (in_set >= 50)
+    color = create_trgb(0, 195, 60, 0);
+  else if (in_set >= 60)
+    color = create_trgb(0, 175, 80, 0);
+  else if (in_set >= 80)
+    color = create_trgb(0, 145, 110, 0);
+  else if (in_set >= 100)
+    color = create_trgb(0, 115, 140, 0);
+  else if (in_set >= 120)
     color = create_trgb(0, 85, 170, 0);
-  else if (in_set > 120)
+  else if (in_set >= 150)
     color = create_trgb(0, 50, 205, 0);
 	return (color);
 }

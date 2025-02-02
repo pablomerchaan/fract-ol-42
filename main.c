@@ -17,8 +17,7 @@ int	on_mouse_hook(int key, int x, int y, void *data)
 		fracdata->y = (y / fracdata->zoom + fracdata-> y) - (y / (fracdata->zoom * 1.1));
 	}
 	if (key == 4 || key == 5)
-		mandelbrot_zoom(key, fracdata);
-
+		zoom(key, fracdata);
   return(0);
 }
 
@@ -33,7 +32,7 @@ int	on_key_hook(int key, t_fracdata *data)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
   static double z;
   static double x;
@@ -43,9 +42,15 @@ int	main(void)
   z = 500;
   x = 0;
   y = 0;
-  data = construct_fracdata(z, x, y);
-  paint_fixed_mandelbrot(data->img, z, x, y);
-  mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
+	if (argc != 2)
+		exit(0);
+	if (ft_strlen(argv[1]) == 10)
+	{
+		printf("MANDELBROT\n");
+		data = construct_fracdata(data, z, x, y, argv);
+		paint_fixed_fractal(*data, z);
+		mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
+	}
 	mlx_mouse_hook(data->mlx_win, *on_mouse_hook, data);
 	mlx_key_hook(data->mlx_win, on_key_hook, data);
 	mlx_loop(data->mlx);

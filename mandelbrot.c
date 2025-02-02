@@ -27,15 +27,18 @@ int calc_mandelbrot_point(struct complex c, int depth)
   return i;
 }
 
-int	get_color(double line, double column, double x, double y, double z)
+int	get_color(double line, double column, t_fracdata data, double z)
 {
   struct complex point;
   int in_set;
 	int color;
 
-	point.r = ((double)line / z) + x;
-	point.i = ((double)column / z) + y;
-	in_set = calc_mandelbrot_point(point, 1000);
+	point.r = ((double)line / z) + data.x;
+	point.i = ((double)column / z) + data.y;
+	if(ft_strcmp(data.name, "mandelbrot"))
+		in_set = calc_mandelbrot_point(point, 1000);
+	if(ft_strcmp(data.name, "julia"))
+		in_set = calc_julia_point(point, 1000, 1.01, 0.3);
 	if (in_set == 1000)
     color = create_trgb(0, 0, 255, 0);
   else if (in_set < 20)
@@ -59,30 +62,30 @@ int	get_color(double line, double column, double x, double y, double z)
 	return (color);
 }
 
-void paint_fixed_mandelbrot(t_img *img, double z, double x, double y)
+void paint_fixed_fractal(t_fracdata data, double z)
 {
   int line;
   int column;
   int color;
 
+	printf("PAINT\n");
   line = 0;
   while (line < 1920)
   {
     column = 0;
     while (column < 1080) {
-			color = get_color(line, column, x, y, z);
-      my_mlx_pixel_put(img, line, column, color);
+			color = get_color(line, column, data, z);
+      my_mlx_pixel_put(data.img, line, column, color);
       column++;
     }
     line++;
   }
 }
 
-void mandelbrot_zoom(int key, t_fracdata *fracdata)
+void zoom(int key, t_fracdata *fracdata)
 {
   double z;
-
-
+	printf("ZOOM\n");
 	//mlx_clear_window(&fracdata->mlx, &fracdata->mlx_win);
   mlx_destroy_image(fracdata->mlx, fracdata->img->img);
 	fracdata->img->img = mlx_new_image(fracdata->mlx, 1920, 1080);
@@ -92,7 +95,7 @@ void mandelbrot_zoom(int key, t_fracdata *fracdata)
 		z = fracdata->zoom / 1.1;
 	else if (key == 5)
 		z = fracdata->zoom * 1.1;
-	paint_fixed_mandelbrot(fracdata->img, z, fracdata->x, fracdata->y);
+	paint_fixed_fractal(*fracdata, z);
   fracdata->zoom = z;
 	mlx_put_image_to_window(fracdata->mlx, fracdata->mlx_win, fracdata->img->img, 0, 0);
 }
